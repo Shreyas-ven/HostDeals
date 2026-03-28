@@ -81,6 +81,9 @@ def login():
 def contact():
     data = request.json
 
+    if not SENDER_EMAIL or not SENDER_PASSWORD:
+        return jsonify({"message": "Email credentials not configured"}), 500
+
     text = f"""Subject: HostDeals Contact
 
 Name: {data.get("name")}
@@ -93,14 +96,17 @@ Message:
     try:
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+
+        # ✅ FIX: ensure values are strings
+        server.login(str(SENDER_EMAIL), str(SENDER_PASSWORD))
+
         server.sendmail(SENDER_EMAIL, SENDER_EMAIL, text)
         server.quit()
 
         return jsonify({"message": "Message sent successfully"})
 
     except Exception as e:
-        print(e)
+        print("MAIL ERROR:", e)
         return jsonify({"message": "Error sending mail"}), 500
 
 # ==============================
