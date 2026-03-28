@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+/* FULL SCREEN FIX */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* MAIN LAYOUT */
+.login-page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  flex: 1;
+  position: relative;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+/* BRAND TEXT */
+.brand {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+}
+
+.brand h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  text-shadow: 0 0 20px #fff5;
+}
+
+.brand p {
+  opacity: 0.7;
+}
+
+/* ANIMATED BACKGROUND */
+.animated-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 20%, #fff1, transparent 20%),
+              radial-gradient(circle at 80% 30%, #fff1, transparent 20%),
+              radial-gradient(circle at 50% 80%, #fff1, transparent 20%);
+  background-size: 400% 400%;
+  animation: moveBG 20s linear infinite;
+  filter: blur(60px);
+}
+
+@keyframes moveBG {
+  0% { background-position: 0% 0%, 0% 0%, 0% 0%; }
+  50% { background-position: 100% 50%, 50% 100%, 100% 100%; }
+  100% { background-position: 0% 0%, 0% 0%, 0% 0%; }
+}
+
+/* LOGIN CARD */
+.login-glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 50px 40px;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+/* TITLE */
+.login-title {
+  color: #fff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* INPUT */
+.login-input {
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.login-input::placeholder {
+  color: #ccc;
+}
+
+/* BUTTON */
+.login-button {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background: white;
+  color: black;
+}
+
+/* MESSAGE */
+.login-message {
+  margin-top: 10px;
+  color: #ff6b6b;
+}
+
+/* HEADER */
+.login-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 100;
+}
+
+/* LOGO */
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  color: white;
+  font-size: 1.5rem;
+}
+
+/* NAVIGATION */
+.nav-links {
+  display: flex;
+  gap: 30px;
+  color: #ccc;
+}
+
+.nav-links span {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-links span:hover {
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* SIGNUP BUTTON */
+.signup-btn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid #fff;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+/* ✨ DYNAMIC EFFECT */
+.signup-btn:hover {
+  background: white;
+  color: black;
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 0 15px #fff;
+}
+
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .left-panel {
+    height: 40%;
+  }
+
+  .right-panel {
+    height: 60%;
+  }
+}
+
+/* 🌫️ GLASS NAV CONTAINER */
+.glass-nav {
+  display: flex;
+  gap: 35px;
+  padding: 10px 25px;
+  border-radius: 50px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+
+  transition: 0.3s ease;
+}
+
+/* MENU ITEMS */
+.glass-nav span {
+  color: #ccc;
+  font-size: 0.95rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT ✨ */
+.glass-nav span:hover {
+  color: #fff;
+  transform: translateY(-2px) scale(1.05);
+  text-shadow: 0 0 10px #fff;
+}
+
+/* UNDERLINE ANIMATION */
+.glass-nav span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background: white;
+  transition: 0.3s;
+}
+
+.glass-nav span:hover::after {
+  width: 100%;
+}
+
+.glass-nav a {
+  color: #fff; /* white color */
+  text-decoration: none; /* remove underline */
+  margin: 0 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.glass-nav a:hover {
+  color: #00bfff; /* change color on hover */
+}
