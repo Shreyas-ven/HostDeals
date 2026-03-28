@@ -1,110 +1,104 @@
 import React, { useEffect, useState } from "react";
 import "./styles/Profile.css";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
+    if (!email) return;
 
     fetch(`http://127.0.0.1:5000/get-profile?email=${email}`)
       .then(res => res.json())
       .then(data => {
-        setUser(data);
+        if (data.user) setUser(data.user);
       })
       .catch(err => console.error(err));
   }, []);
 
-
-  useEffect(() => {
-  const email = localStorage.getItem("userEmail");
-
-  fetch(`http://127.0.0.1:5000/get-profile?email=${email}`)
-    .then(res => {
-      if (!res.ok) throw new Error("Failed to fetch");
-      return res.json();
-    })
-    .then(data => {
-      console.log("PROFILE DATA:", data); // ✅ DEBUG
-
-      if (data.message) {
-        alert(data.message);
-        return;
-      }
-
-      setUser(data);
-    })
-    .catch(err => {
-      console.error("ERROR:", err);
-      alert("Failed to load profile");
-    });
-}, []);
-
-  if (!user || !user.email) {
-  return <h2 style={{ textAlign: "center" }}>Loading...</h2>;
-}
+  if (!user) {
+    return <div className="loader">Loading...</div>;
+  }
 
   return (
     <div className="profile-page">
 
-      <h1>My Profile</h1>
+      {/* HEADER */}
+      <div className="profile-header">
+        <h1>HostDeals</h1>
+        <h2>My Profile</h2>
 
-      <div className="profile-card">
-
-        <h2>Personal Details</h2>
-
-        <p><strong>Name:</strong> {user.name}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Phone:</strong> {user.phone}</p>
-        <p><strong>Type:</strong> {user.type}</p>
-        <p><strong>Organization:</strong> {user.org}</p>
-        <p><strong>Source:</strong> {user.source}</p>
-
+        <button
+    className="home-btn"
+    onClick={() => navigate("/dashboard")}
+  >
+    🏠 Home
+  </button>
       </div>
 
-      {/* GitHub Section */}
-      <div className="profile-card">
+      {/* MAIN CARD */}
+      <motion.div
+        className="profile-card"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
 
-        <h2>GitHub Account</h2>
+        {/* DETAILS */}
+        <div className="section">
+          <h3>Personal Details</h3>
 
-        {user.github_accounts && user.github_accounts.length > 0 ? (
-          user.github_accounts.map((acc, index) => (
-            <div key={index} className="github-box">
-              ✅ {acc.username}
+          <div className="info-grid">
+            <div><b>Name:</b> {user.name}</div>
+            <div><b>Email:</b> {user.email}</div>
+            <div><b>Phone:</b> {user.phone}</div>
+            <div><b>Type:</b> {user.type}</div>
+            <div><b>Organization:</b> {user.org}</div>
+            <div><b>Source:</b> {user.source}</div>
+          </div>
+        </div>
 
-              <button
-                className="delete-btn"
-                onClick={async () => {
-                  await fetch("http://127.0.0.1:5000/delete-github", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      email: user.email,
-                      username: acc.username
-                    })
-                  });
+        {/* GITHUB */}
+        <div className="section">
+          <h3>GitHub Accounts</h3>
 
-                  // refresh UI
-                  setUser(prev => ({
-                    ...prev,
-                    github_accounts: prev.github_accounts.filter(
-                      a => a.username !== acc.username
-                    )
-                  }));
-                }}
-              >
-                Delete
-              </button>
+          {user.github_accounts?.length > 0 ? (
+            user.github_accounts.map((acc, i) => (
+              <div key={i} className="github-card">
+                <span>👨‍💻 {acc.username}</span>
 
-            </div>
-          ))
-        ) : (
-          <p>No GitHub connected</p>
-        )}
+                <button
+                  className="remove-btn"
+                  onClick={async () => {
+                    await fetch("http://127.0.0.1:5000/delete-github", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        email: user.email,
+                        username: acc.username
+                      })
+                    });
 
-      </div>
+                    setUser(prev => ({
+                      ...prev,
+                      github_accounts: prev.github_accounts.filter(
+                        a => a.username !== acc.username
+                      )
+                    }));
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className="no-data">No GitHub connected</p>
+          )}
+        </div>
 
+      </motion.div>
     </div>
   );
 };

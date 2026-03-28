@@ -1,83 +1,118 @@
-/* Full page layout */
 .profile-page {
   min-height: 100vh;
-  padding: 40px;
-  background: linear-gradient(135deg, #000000, #0a0a0a);
-  color: #ffffff;
-  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #0a0a0a, #111);
+  color: white;
+  padding: 30px;
 }
 
-/* Page title */
-.profile-page h1 {
+/* HEADER */
+.profile-header {
   text-align: center;
   margin-bottom: 30px;
+}
+
+.profile-header h1 {
   font-size: 32px;
-  letter-spacing: 1px;
-}
-
-/* Glass card */
-.profile-card {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 25px;
-  border-radius: 15px;
-
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Hover effect */
-.profile-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-}
-
-/* Card heading */
-.profile-card h3 {
-  margin-bottom: 15px;
-  font-size: 20px;
   color: #00d4ff;
 }
 
-/* Text styling */
-.profile-card p {
-  margin: 8px 0;
-  font-size: 15px;
-  color: #ddd;
+.profile-header h2 {
+  font-size: 20px;
+  color: #ccc;
 }
 
-/* Highlight labels */
-.profile-card p b {
-  color: #ffffff;
+/* CARD */
+.profile-card {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
 
-/* GitHub section */
-.profile-card div {
-  margin-top: 10px;
+/* SECTION */
+.section {
+  margin-bottom: 30px;
+}
+
+.section h3 {
+  margin-bottom: 15px;
+  color: #00d4ff;
+}
+
+/* GRID DETAILS */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.info-grid div {
   padding: 10px;
   border-radius: 8px;
-  background: rgba(0, 212, 255, 0.1);
-  color: #00d4ff;
-  font-weight: 500;
+  background: rgba(255,255,255,0.05);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .profile-page {
-    padding: 20px;
-  }
+/* GITHUB CARD */
+.github-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  .profile-card {
-    padding: 20px;
-  }
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
 
-  .profile-page h1 {
-    font-size: 26px;
-  }
+  background: rgba(255,255,255,0.05);
+  transition: 0.3s;
+}
+
+.github-card:hover {
+  background: rgba(0, 212, 255, 0.1);
+}
+
+/* BUTTON (IMPORTANT FIX) */
+.remove-btn {
+  background: #ff4d4d;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.remove-btn:hover {
+  background: #ff1a1a;
+  transform: scale(1.05);
+}
+
+/* LOADER */
+.loader {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 20px;
+}
+
+.home-btn {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+
+  background: #00d4ff;
+  color: black;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.home-btn:hover {
+  background: #00aacc;
+  transform: scale(1.05);
 }

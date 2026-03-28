@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "./styles/Register.css";
 
 const Register = () => {
-
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -15,8 +14,12 @@ const Register = () => {
   const [source, setSource] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
+    setLoading(true);
+    setMessage("");
+
     try {
       const res = await registerUser({
         name,
@@ -31,6 +34,7 @@ const Register = () => {
       setMessage(res.data.message);
 
       if (res.data.success) {
+        // reset fields
         setName("");
         setEmail("");
         setPhone("");
@@ -38,10 +42,17 @@ const Register = () => {
         setOrg("");
         setSource("");
         setPassword("");
+
+        // ✅ REDIRECT TO LOGIN PAGE
+        setTimeout(() => {
+          navigate("/");
+        }, 1000); // small delay for better UX
       }
 
     } catch {
       setMessage("Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,75 +66,78 @@ const Register = () => {
       {/* HEADER */}
       <header className="register-header">
         <div className="logo">HostDeals</div>
-        
 
         <button className="top-btn" onClick={goHome}>
           Login
         </button>
       </header>
 
+      <div className="register-container">
 
+        <h1 className="register-title">Registration</h1>
 
-<div className="register-container">
+        {/* GLASS CARD */}
+        <div className="register-card">
 
-  <h1 className="register-title">Registration</h1>
+          <input
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
 
-      {/* GLASS CARD */}
-      <div className="register-card">
+          <input
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <input
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+          <input
+            placeholder="Phone Number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
 
-        <input
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            <option value="">Select Type</option>
+            <option>Student</option>
+            <option>Employee</option>
+            <option>Freelancer</option>
+          </select>
 
-        <input
-          placeholder="Phone Number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
+          <input
+            placeholder="Organization"
+            value={org}
+            onChange={(e) => setOrg(e.target.value)}
+          />
 
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="">Select Type</option>
-          <option>Student</option>
-          <option>Employee</option>
-          <option>Freelancer</option>
-        </select>
+          <input
+            placeholder="Where did you hear about us?"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+          />
 
-        <input
-          placeholder="Organization"
-          value={org}
-          onChange={(e) => setOrg(e.target.value)}
-        />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <input
-          placeholder="Where did you hear about us?"
-          value={source}
-          onChange={(e) => setSource(e.target.value)}
-        />
+          <button onClick={handleRegister} disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          {/* Loader */}
+          {loading && (
+            <div className="loader-container">
+              <div className="loader"></div>
+            </div>
+          )}
 
-        <button onClick={handleRegister}>
-          Register
-        </button>
+          <p className="msg">{message}</p>
 
-        <p className="msg">{message}</p>
-
+        </div>
       </div>
-      </div>
-
 
       {/* FOOTER */}
       <footer className="register-footer">

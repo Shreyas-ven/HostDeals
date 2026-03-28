@@ -55,12 +55,76 @@ const MyHosting = ({ userEmail }) => { // pass logged-in user's email as prop
                 </p>
               </div>
               <div className="actions">
-                <a href={site.url} target="_blank" rel="noreferrer">
-                  <button className="glass-btn">View</button>
-                </a>
-                <button className="glass-btn">Stop</button>
-                <button className="glass-btn delete">Delete</button>
-              </div>
+
+  <a href={site.url} target="_blank" rel="noreferrer">
+    <button className="glass-btn">Visit</button>
+  </a>
+
+  {site.status === "Running" ? (
+    <button
+      className="glass-btn"
+      onClick={async () => {
+        await fetch("http://127.0.0.1:5000/stop-site", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            repo: site.repo,
+            email: userEmail
+          })
+        });
+
+        setSites(prev =>
+          prev.map(s =>
+            s.repo === site.repo ? { ...s, status: "Stopped" } : s
+          )
+        );
+      }}
+    >
+      Stop
+    </button>
+  ) : (
+    <button
+      className="glass-btn"
+      onClick={async () => {
+        await fetch("http://127.0.0.1:5000/start-site", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            repo: site.repo,
+            email: userEmail
+          })
+        });
+
+        setSites(prev =>
+          prev.map(s =>
+            s.repo === site.repo ? { ...s, status: "Running" } : s
+          )
+        );
+      }}
+    >
+      Start
+    </button>
+  )}
+
+  <button
+    className="glass-btn delete"
+    onClick={async () => {
+      await fetch("http://127.0.0.1:5000/delete-site", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          repo: site.repo,
+          email: userEmail
+        })
+      });
+
+      setSites(prev => prev.filter(s => s.repo !== site.repo));
+    }}
+  >
+    Delete
+  </button>
+
+</div>
             </div>
           ))}
         </div>
