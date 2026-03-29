@@ -2,25 +2,38 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/MyHosting.css";
 
-const MyHosting = ({ userEmail }) => { // pass logged-in user's email as prop
+const MyHosting = ({ userEmail }) => {
   const navigate = useNavigate();
+
   const [sites, setSites] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [domain, setDomain] = useState("");
   const [region, setRegion] = useState("");
 
+  // ✅ FIX: fallback to localStorage if prop not passed
+  const email = userEmail || localStorage.getItem("userEmail");
+
   // Fetch sites from backend on mount
   useEffect(() => {
-    if (!userEmail) return;
-    fetch(`/my-sites?email=${userEmail}`)
+    if (!email) {
+      console.log("❌ No email found");
+      return;
+    }
+
+    console.log("✅ Fetching sites for:", email);
+
+    fetch(`http://127.0.0.1:5000/my-sites?email=${email}`)
       .then(res => res.json())
-      .then(data => setSites(data))
+      .then(data => {
+        console.log("✅ Sites:", data);
+        setSites(data);
+      })
       .catch(err => console.error("Error fetching sites:", err));
-  }, [userEmail]);
+  }, [email]);
 
   const handleCreate = () => {
     console.log("Create site:", domain, region);
-    // connect this later to your backend upload endpoint
+
     setShowForm(false);
     setDomain("");
     setRegion("");
@@ -44,8 +57,10 @@ const MyHosting = ({ userEmail }) => { // pass logged-in user's email as prop
       {/* CONTENT */}
       <main className="hosting-content">
         <h1>MY HOSTED WEBSITES</h1>
+
         <div className="hosting-list">
           {sites.length === 0 && <p>No hosted websites yet.</p>}
+
           {sites.map((site, idx) => (
             <div className="hosting-row" key={idx}>
               <div className="site-info">
@@ -54,77 +69,78 @@ const MyHosting = ({ userEmail }) => { // pass logged-in user's email as prop
                   {site.status}
                 </p>
               </div>
+
               <div className="actions">
 
-  <a href={site.url} target="_blank" rel="noreferrer">
-    <button className="glass-btn">Visit</button>
-  </a>
+                <a href={site.url} target="_blank" rel="noreferrer">
+                  <button className="glass-btn">Visit</button>
+                </a>
 
-  {site.status === "Running" ? (
-    <button
-      className="glass-btn"
-      onClick={async () => {
-        await fetch("http://127.0.0.1:5000/stop-site", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            repo: site.repo,
-            email: userEmail
-          })
-        });
+                {site.status === "Running" ? (
+                  <button
+                    className="glass-btn"
+                    onClick={async () => {
+                      await fetch("http://127.0.0.1:5000/stop-site", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          repo: site.repo,
+                          email: email   // ✅ FIX: use fallback email
+                        })
+                      });
 
-        setSites(prev =>
-          prev.map(s =>
-            s.repo === site.repo ? { ...s, status: "Stopped" } : s
-          )
-        );
-      }}
-    >
-      Stop
-    </button>
-  ) : (
-    <button
-      className="glass-btn"
-      onClick={async () => {
-        await fetch("http://127.0.0.1:5000/start-site", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            repo: site.repo,
-            email: userEmail
-          })
-        });
+                      setSites(prev =>
+                        prev.map(s =>
+                          s.repo === site.repo ? { ...s, status: "Stopped" } : s
+                        )
+                      );
+                    }}
+                  >
+                    Stop
+                  </button>
+                ) : (
+                  <button
+                    className="glass-btn"
+                    onClick={async () => {
+                      await fetch("http://127.0.0.1:5000/start-site", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          repo: site.repo,
+                          email: email   // ✅ FIX
+                        })
+                      });
 
-        setSites(prev =>
-          prev.map(s =>
-            s.repo === site.repo ? { ...s, status: "Running" } : s
-          )
-        );
-      }}
-    >
-      Start
-    </button>
-  )}
+                      setSites(prev =>
+                        prev.map(s =>
+                          s.repo === site.repo ? { ...s, status: "Running" } : s
+                        )
+                      );
+                    }}
+                  >
+                    Start
+                  </button>
+                )}
 
-  <button
-    className="glass-btn delete"
-    onClick={async () => {
-      await fetch("http://127.0.0.1:5000/delete-site", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          repo: site.repo,
-          email: userEmail
-        })
-      });
+                <button
+                  className="glass-btn delete"
+                  onClick={async () => {
+                    await fetch("http://127.0.0.1:5000/delete-site", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        repo: site.repo,
+                        email: email   // ✅ FIX
+                      })
+                    });
 
-      setSites(prev => prev.filter(s => s.repo !== site.repo));
-    }}
-  >
-    Delete
-  </button>
+                    setSites(prev => prev.filter(s => s.repo !== site.repo));
+                  }}
+                >
+                  Delete
+                </button>
 
-</div>
+              </div>
             </div>
           ))}
         </div>
@@ -135,17 +151,20 @@ const MyHosting = ({ userEmail }) => { // pass logged-in user's email as prop
         <div className="modal-overlay">
           <div className="modal">
             <h2>Create Hosting</h2>
+
             <input
               placeholder="Enter subdomain (e.g. shreyas)"
               value={domain}
               onChange={(e) => setDomain(e.target.value)}
             />
+
             <select value={region} onChange={(e) => setRegion(e.target.value)}>
               <option value="">Select Region</option>
               <option>India</option>
               <option>US</option>
               <option>Europe</option>
             </select>
+
             <div className="modal-actions">
               <button className="glass-btn" onClick={handleCreate}>
                 Launch

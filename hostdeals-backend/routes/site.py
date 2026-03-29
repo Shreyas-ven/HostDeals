@@ -106,3 +106,14 @@ def delete_site():
         return jsonify({"message": "Deleted successfully"})
 
     return jsonify({"message": res.text}), 500
+
+
+@site_bp.route("/my-sites", methods=["GET"])
+def get_my_sites():
+    email = request.args.get("email")
+
+    if not email:
+        return jsonify([])
+
+    sites = list(sites_collection.find({"email": email}, {"_id": 0}))
+    return jsonify(sites)
