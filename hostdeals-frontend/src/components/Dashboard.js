@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/Dashboard.css";
+import toast, { Toaster } from "react-hot-toast";
 
 const Dashboard = () => {
 
@@ -49,12 +50,12 @@ const Dashboard = () => {
   const handleSaveGitHub = async () => {
 
     if (githubAccounts.length >= 1) {
-      alert("Only one GitHub account allowed. Delete existing first.");
+      toast.error("Only one GitHub account allowed");
       return;
     }
 
     if (!githubUser || !githubToken) {
-      alert("Please enter username and token");
+      toast("Enter username and token");
       return;
     }
 
@@ -74,12 +75,12 @@ const Dashboard = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Failed to save GitHub account");
+        toast.error(data.message || "Failed to save GitHub account");
         setLoading(false);
         return;
       }
 
-      alert("GitHub Connected ✅");
+      toast.success("GitHub Connected");
 
       setGithubAccounts(prev => [
         ...prev,
@@ -92,7 +93,7 @@ const Dashboard = () => {
 
     } catch (err) {
       console.error(err);
-      alert("Server not responding. Check backend.");
+      toast.error("Server not responding");
     }
 
     setLoading(false);
@@ -100,6 +101,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page">
+      <Toaster position="top-right" reverseOrder={false} />
 
       {/* HEADER */}
       <header className="dash-header">
@@ -195,6 +197,16 @@ const Dashboard = () => {
           <div className="modal glass">
             <h2>Connect GitHub</h2>
 
+            <p className="token-guide">
+  • Enter your GitHub username (your profile name)  
+  <br />
+  • Go to GitHub → Settings → Developer Settings  
+  <br />
+  • Generate Personal Access Token (classic)  
+  <br />
+  • Copy token and paste here (no spaces)
+</p>
+
             <input
               placeholder="GitHub Username"
               value={githubUser}
@@ -207,6 +219,12 @@ const Dashboard = () => {
               value={githubToken}
               onChange={(e) => setGithubToken(e.target.value)}
             />
+
+            <p className="token-warning">
+  ⚠️ If already connected, no need to connect again.  
+  <br />
+  Check it under Profile section.
+</p>
 
             <div className="modal-actions">
               <button

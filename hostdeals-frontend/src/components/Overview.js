@@ -7,7 +7,7 @@ const Overview = () => {
   const navigate = useNavigate();
 
   const handleHome = () => {
-    navigate("/"); // Redirect to login page
+    navigate("/");
   };
 
   return (
@@ -17,6 +17,8 @@ const Overview = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
     >
+
+      {/* HEADER */}
       <header className="overview-header">
         <div className="logo">HostDeals</div>
         <button className="home-btn" onClick={handleHome}>
@@ -24,14 +26,16 @@ const Overview = () => {
         </button>
       </header>
 
+      {/* CONTENT */}
       <main className="overview-content">
+
         <motion.h1
           className="overview-title"
           initial={{ rotateY: 90 }}
           animate={{ rotateY: 0 }}
           transition={{ duration: 1 }}
         >
-          Launch Websites Instantly with HostDeals
+          Deploy Websites Instantly with GitHub Integration
         </motion.h1>
 
         <motion.p
@@ -40,9 +44,10 @@ const Overview = () => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          HostDeals provides a fast, secure, and free mini hosting platform. Upload your website files,
-          get a subdomain instantly, and manage your sites from a simple dashboard.
-          Perfect for developers, small businesses, and personal projects.
+          HostDeals is a smart deployment platform that lets you upload your website files 
+          and automatically host them using GitHub Pages. Your files are securely stored 
+          in your own GitHub repositories, giving you full ownership, version control, 
+          and reliable global hosting — all with a simple dashboard experience.
         </motion.p>
 
         <motion.section
@@ -53,12 +58,12 @@ const Overview = () => {
         >
           <h2>Key Features</h2>
           <ul>
-            <li>One-click file upload and website deployment</li>
-            <li>Instant subdomain assignment for your site</li>
-            <li>View and manage all active websites</li>
-            <li>Delete websites anytime with a single click</li>
-            <li>SSL integration for secure connections</li>
-            <li>Basic analytics and email notifications for updates</li>
+            <li>Connect your GitHub account securely</li>
+            <li>Automatically create repositories for your websites</li>
+            <li>Upload HTML, CSS, JS, and images directly</li>
+            <li>Instant deployment using GitHub Pages</li>
+            <li>Full ownership of your code and repositories</li>
+            <li>Manage, view, and delete deployments anytime</li>
           </ul>
         </motion.section>
 
@@ -70,10 +75,11 @@ const Overview = () => {
         >
           <h2>How It Works</h2>
           <ol>
-            <li>Sign up with your email and password</li>
-            <li>Upload your website ZIP files via the dashboard</li>
-            <li>Launch your website instantly on a subdomain</li>
-            <li>Manage your sites, track status, and delete if needed</li>
+            <li>Sign up and log in to your account</li>
+            <li>Connect your GitHub account using a personal access token</li>
+            <li>Upload your website files through the dashboard</li>
+            <li>We create a repository and deploy your site via GitHub Pages</li>
+            <li>Access your live website instantly with a public URL</li>
           </ol>
         </motion.section>
 
@@ -86,9 +92,14 @@ const Overview = () => {
           <h2>Contact & Support</h2>
           <p>Email: shreyasvbangera@gmail.com</p>
           <p>Phone: +91 80733 18562</p>
-          <p>We provide quick support for deployment issues and site management.</p>
+          <p>
+            Need help with GitHub connection or deployment? We provide quick support 
+            to get your website live without hassle.
+          </p>
         </motion.section>
+
       </main>
+
     </motion.div>
   );
 };

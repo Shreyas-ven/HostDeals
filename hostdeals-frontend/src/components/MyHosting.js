@@ -9,45 +9,53 @@ const MyHosting = ({ userEmail }) => {
   const [showForm, setShowForm] = useState(false);
   const [domain, setDomain] = useState("");
   const [region, setRegion] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState(null); // ✅ ADDED
 
-  // ✅ FIX: fallback to localStorage if prop not passed
   const email = userEmail || localStorage.getItem("userEmail");
 
-  // Fetch sites from backend on mount
   useEffect(() => {
     if (!email) {
       console.log("❌ No email found");
       return;
     }
 
-    console.log("✅ Fetching sites for:", email);
-
     fetch(`http://127.0.0.1:5000/my-sites?email=${email}`)
       .then(res => res.json())
-      .then(data => {
-        console.log("✅ Sites:", data);
-        setSites(data);
-      })
+      .then(data => setSites(data))
       .catch(err => console.error("Error fetching sites:", err));
   }, [email]);
 
   const handleCreate = () => {
     console.log("Create site:", domain, region);
-
     setShowForm(false);
     setDomain("");
     setRegion("");
   };
 
+  // ✅ CONFIRM DELETE FUNCTION (ADDED)
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+
+    await fetch("http://127.0.0.1:5000/delete-site", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        repo: deleteTarget.repo,
+        email: email
+      })
+    });
+
+    setSites(prev => prev.filter(s => s.repo !== deleteTarget.repo));
+    setDeleteTarget(null);
+  };
+
   return (
     <div className="hosting-page">
+
       {/* HEADER */}
       <header className="hosting-header">
         <div className="logo">HostDeals</div>
         <div className="header-right">
-          <button className="create-btn" onClick={() => setShowForm(true)}>
-            + Create
-          </button>
           <button className="home-btn" onClick={() => navigate("/dashboard")}>
             ⬅ Dashboard
           </button>
@@ -85,7 +93,7 @@ const MyHosting = ({ userEmail }) => {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                           repo: site.repo,
-                          email: email   // ✅ FIX: use fallback email
+                          email: email
                         })
                       });
 
@@ -107,7 +115,7 @@ const MyHosting = ({ userEmail }) => {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                           repo: site.repo,
-                          email: email   // ✅ FIX
+                          email: email
                         })
                       });
 
@@ -122,20 +130,10 @@ const MyHosting = ({ userEmail }) => {
                   </button>
                 )}
 
+                {/* ✅ UPDATED DELETE BUTTON */}
                 <button
                   className="glass-btn delete"
-                  onClick={async () => {
-                    await fetch("http://127.0.0.1:5000/delete-site", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        repo: site.repo,
-                        email: email   // ✅ FIX
-                      })
-                    });
-
-                    setSites(prev => prev.filter(s => s.repo !== site.repo));
-                  }}
+                  onClick={() => setDeleteTarget(site)}
                 >
                   Delete
                 </button>
@@ -146,7 +144,7 @@ const MyHosting = ({ userEmail }) => {
         </div>
       </main>
 
-      {/* MODAL */}
+      {/* EXISTING MODAL */}
       {showForm && (
         <div className="modal-overlay">
           <div className="modal">
@@ -170,6 +168,31 @@ const MyHosting = ({ userEmail }) => {
                 Launch
               </button>
               <button className="glass-btn delete" onClick={() => setShowForm(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ✅ NEW DELETE CONFIRM MODAL */}
+      {deleteTarget && (
+        <div className="modal-overlay">
+          <div className="modal glass delete-modal">
+            <h2>⚠️ Confirm Delete</h2>
+            <p>
+              Are you sure you want to delete <b>{deleteTarget.domain}</b>?
+            </p>
+
+            <div className="modal-actions">
+              <button className="glass-btn delete" onClick={confirmDelete}>
+                Yes, Delete
+              </button>
+
+              <button
+                className="glass-btn"
+                onClick={() => setDeleteTarget(null)}
+              >
                 Cancel
               </button>
             </div>

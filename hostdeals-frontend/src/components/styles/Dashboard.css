@@ -127,3 +127,19 @@
   backdrop-filter: blur(20px);
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
+
+.token-guide {
+  font-size: 0.85rem;
+  color: #ddd;
+  margin-bottom: 15px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.token-warning {
+  color: #ff4d4d;
+  font-size: 0.85rem;
+  margin-top: 10px;
+  line-height: 1.4;
+  text-align: left;
+}

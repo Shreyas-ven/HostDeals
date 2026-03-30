@@ -57,11 +57,11 @@ const Login = ({ onLogin, onShowRegister }) => {
         <div className="logo">HostDeals</div>
 
         <nav className="glass-nav">
-          <a href="/overview" target="_blank" rel="noopener noreferrer">Overview</a>
-          <a href="/menu" target="_blank" rel="noopener noreferrer">Menu</a>
-          <a href="/pricing" target="_blank" rel="noopener noreferrer">Pricing</a>
-          <a href="/contact" target="_blank" rel="noopener noreferrer">Contact</a>
-          <a href="/chatbot" target="_blank" rel="noopener noreferrer">ChatBot</a>
+          <a href="/overview" >Overview</a>
+          <a href="/menu" >Menu</a>
+          <a href="/pricing" >Pricing</a>
+          <a href="/contact" >Contact</a>
+          <a href="/chatbot" >ChatBot</a>
         </nav>
 
         <button
@@ -77,8 +77,20 @@ const Login = ({ onLogin, onShowRegister }) => {
         <div className="animated-bg"></div>
         <div className="brand">
           <h1>HostDeals</h1>
-          <p>Smart Hosting Solutions</p>
+          <p>-SMART HOSTING SOLUTIONS-</p>
         </div>
+
+        <div className="slogan-box">
+  <p className="slogan">
+    Bored of writing Git commands?
+  </p>
+  <p className="slogan">
+    Taking too much time to host simple websites?
+  </p>
+  <p className="slogan highlight">
+    Just follow us ⚡
+  </p>
+</div>
       </div>
 
       {/* RIGHT SIDE */}

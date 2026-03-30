@@ -9,6 +9,7 @@ import Contact from "./components/Contact";
 import MyHosting from "./components/MyHosting";
 import Upload from "./components/Upload";
 import Profile from "./components/Profile";
+import Menu from "./components/Menu";
 
 function App() {
   const handleLogin = (email) => {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/my-hosting" element={<MyHosting />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/menu" element={<Menu />} />
 
       </Routes>
     </Router>

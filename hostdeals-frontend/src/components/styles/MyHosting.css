@@ -178,3 +178,27 @@
   background: #111;   /* dark background */
   color: white;       /* visible text */
 }
+
+.delete-modal {
+  animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.delete-modal h2 {
+  color: #ff4d4d;
+}
+
+.delete-modal p {
+  margin: 15px 0;
+  color: #ddd;
+}
