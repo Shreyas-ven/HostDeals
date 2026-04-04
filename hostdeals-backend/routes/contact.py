@@ -12,7 +12,7 @@ SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")
 # ==============================
 # 📩 CONTACT
 # ==============================
-@contact_bp.route("/contact", methods=["POST"])
+@contact_bp.route("/api/contact", methods=["POST"])
 def contact():
     data = request.json
 

@@ -6,7 +6,7 @@ auth_bp = Blueprint("auth", __name__)
 
 users_collection = mongo.db.users
 
-@auth_bp.route("/register", methods=["POST"])
+@auth_bp.route("/api/register", methods=["POST"])
 def register():
     data = request.json
 
@@ -28,7 +28,7 @@ def register():
     return jsonify({"success": True, "message": "Registered successfully"})
 
 
-@auth_bp.route("/login", methods=["POST"])
+@auth_bp.route("/api/login", methods=["POST"])
 def login():
     data = request.json
 

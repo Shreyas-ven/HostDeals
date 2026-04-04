@@ -19,7 +19,7 @@ const MyHosting = ({ userEmail }) => {
       return;
     }
 
-    fetch(`http://127.0.0.1:5000/my-sites?email=${email}`)
+    fetch(`/api/my-sites?email=${email}`)
       .then(res => res.json())
       .then(data => setSites(data))
       .catch(err => console.error("Error fetching sites:", err));
@@ -36,7 +36,7 @@ const MyHosting = ({ userEmail }) => {
   const confirmDelete = async () => {
     if (!deleteTarget) return;
 
-    await fetch("http://127.0.0.1:5000/delete-site", {
+    await fetch("/api/delete-site", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -88,7 +88,7 @@ const MyHosting = ({ userEmail }) => {
                   <button
                     className="glass-btn"
                     onClick={async () => {
-                      await fetch("http://127.0.0.1:5000/stop-site", {
+                      await fetch("/api/stop-site", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -110,7 +110,7 @@ const MyHosting = ({ userEmail }) => {
                   <button
                     className="glass-btn"
                     onClick={async () => {
-                      await fetch("http://127.0.0.1:5000/start-site", {
+                      await fetch("/api/start-site", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({

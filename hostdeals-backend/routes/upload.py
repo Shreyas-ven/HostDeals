@@ -25,7 +25,7 @@ def generate_repo_name(domain):
     return domain.replace(" ", "-").lower() + "-" + str(int(time.time()))
 
 
-@upload_bp.route("/upload", methods=["POST"])
+@upload_bp.route("/api/upload", methods=["POST"])
 def upload():
     try:
         domain = request.form.get("domain")

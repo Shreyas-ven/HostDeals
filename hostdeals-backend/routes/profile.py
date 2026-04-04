@@ -9,7 +9,7 @@ users_collection = mongo.db.users
 # ==============================
 # 👤 GET PROFILE
 # ==============================
-@profile_bp.route("/get-profile", methods=["GET"])
+@profile_bp.route("/api/get-profile", methods=["GET"])
 def get_profile():
     try:
         email = request.args.get("email")

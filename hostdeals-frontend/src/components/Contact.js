@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./styles/Contact.css";
 
+
 const Contact = () => {
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -16,8 +17,11 @@ const Contact = () => {
   };
 
   const handleSubmit = async () => {
+  setLoading(true);   // ✅ start loader
+  setStatus("");
+
   try {
-    const res = await axios.post("http://localhost:5000/contact", {
+    await axios.post("/api/contact", {
       name,
       email,
       message,
@@ -25,7 +29,6 @@ const Contact = () => {
 
     setStatus(res.data.message);
 
-    // ✅ clear form after success
     if (res.data.message === "Message sent successfully") {
       setName("");
       setEmail("");
@@ -34,6 +37,8 @@ const Contact = () => {
 
   } catch (err) {
     setStatus("Error sending message");
+  } finally {
+    setLoading(false);   // ✅ stop loader
   }
 };
 
@@ -78,9 +83,10 @@ const Contact = () => {
             onChange={(e) => setMessage(e.target.value)}
           />
 
-          <button onClick={handleSubmit}>
-            Send Message
-          </button>
+          <button onClick={handleSubmit} disabled={loading}>
+  {loading ? "Sending..." : "Send Message"}
+</button>
+{loading && <div className="loader"></div>}
 
           <p>{status}</p>
 

@@ -17,7 +17,7 @@ users_collection = mongo.db.users
 sites_collection = mongo.db.sites
 
 
-@site_bp.route("/start-site", methods=["POST"])
+@site_bp.route("/api/start-site", methods=["POST"])
 def start_site():
     data = request.json
     repo = data.get("repo")
@@ -52,7 +52,7 @@ def start_site():
     return jsonify({"message": res.text}), 500
 
 
-@site_bp.route("/stop-site", methods=["POST"])
+@site_bp.route("/api/stop-site", methods=["POST"])
 def stop_site():
     data = request.json
     repo = data.get("repo")
@@ -83,7 +83,7 @@ def stop_site():
     return jsonify({"message": res.text}), 500
 
 
-@site_bp.route("/delete-site", methods=["POST"])
+@site_bp.route("/api/delete-site", methods=["POST"])
 def delete_site():
     data = request.json
     repo = data.get("repo")
@@ -108,7 +108,7 @@ def delete_site():
     return jsonify({"message": res.text}), 500
 
 
-@site_bp.route("/my-sites", methods=["GET"])
+@site_bp.route("/api/my-sites", methods=["GET"])
 def get_my_sites():
     email = request.args.get("email")
 

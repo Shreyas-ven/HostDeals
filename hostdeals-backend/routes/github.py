@@ -7,7 +7,7 @@ github_bp = Blueprint("github", __name__)
 users_collection = mongo.db.users
 
 
-@github_bp.route("/save-github", methods=["POST"])
+@github_bp.route("/api/save-github", methods=["POST"])
 def save_github():
     data = request.json
 
@@ -59,7 +59,7 @@ def save_github():
     return jsonify({"message": "GitHub connected successfully"})
 
 
-@github_bp.route("/get-github", methods=["GET"])
+@github_bp.route("/api/get-github", methods=["GET"])
 def get_github():
     email = request.args.get("email")
 
@@ -73,7 +73,7 @@ def get_github():
     })
 
 
-@github_bp.route("/delete-github", methods=["POST"])
+@github_bp.route("/api/delete-github", methods=["POST"])
 def delete_github():
     data = request.json
     email = data.get("email")
@@ -96,7 +96,7 @@ def delete_github():
     return jsonify({"message": "GitHub removed"})
 
 
-@github_bp.route("/get-repos", methods=["GET"])
+@github_bp.route("/api/get-repos", methods=["GET"])
 def get_repos():
     email = request.args.get("email")
 

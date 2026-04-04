@@ -22,7 +22,7 @@ const Dashboard = () => {
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
 
-    fetch(`http://127.0.0.1:5000/get-github?email=${email}`)
+    fetch(`/api/get-github?email=${email}`)
       .then(res => res.json())
       .then(data => {
         setGithubAccounts(data.accounts || []);
@@ -34,7 +34,7 @@ const Dashboard = () => {
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
 
-    fetch(`http://127.0.0.1:5000/get-repos?email=${email}`)
+    fetch(`/api/get-repos?email=${email}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -62,7 +62,7 @@ const Dashboard = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/save-github", {
+      const res = await fetch("/api/save-github", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -11,7 +11,7 @@ const Profile = () => {
     const email = localStorage.getItem("userEmail");
     if (!email) return;
 
-    fetch(`http://127.0.0.1:5000/get-profile?email=${email}`)
+    fetch(`/api/get-profile?email=${email}`)
       .then(res => res.json())
       .then(data => {
         if (data.user) setUser(data.user);
@@ -72,7 +72,7 @@ const Profile = () => {
                 <button
                   className="remove-btn"
                   onClick={async () => {
-                    await fetch("http://127.0.0.1:5000/delete-github", {
+                    await fetch("/api/delete-github", {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({

@@ -42,7 +42,7 @@ const Upload = () => {
       setStatus("Uploading...");
 
       await axios.post(
-        "http://localhost:5000/upload",
+        "/api/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

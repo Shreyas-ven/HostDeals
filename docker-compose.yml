@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./hostdeals-backend
+    volumes:
+      - ./hostdeals-backend:/app   # 🔥 LIVE CODE
+    ports:
+      - "5001:5000"
+      
+  frontend:
+    build: ./hostdeals-frontend
+    volumes:
+      - ./hostdeals-frontend:/app  # 🔥 LIVE CODE (for dev)
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend

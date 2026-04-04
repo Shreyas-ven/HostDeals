@@ -3,6 +3,7 @@ import { loginUser } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion"; // ✅ ADD
 import "./styles/Login.css";
+import { Link } from "react-router-dom";
 
 
 
@@ -57,11 +58,11 @@ const Login = ({ onLogin, onShowRegister }) => {
         <div className="logo">HostDeals</div>
 
         <nav className="glass-nav">
-          <a href="/overview" >Overview</a>
-          <a href="/menu" >Menu</a>
-          <a href="/pricing" >Pricing</a>
-          <a href="/contact" >Contact</a>
-          <a href="/chatbot" >ChatBot</a>
+          <Link to="/overview">Overview</Link>
+          <Link to="/menu">Menu</Link>
+          <Link to="/pricing">Pricing</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/chatbot">ChatBot</Link>
         </nav>
 
         <button
