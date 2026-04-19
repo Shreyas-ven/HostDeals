@@ -36,6 +36,7 @@ const MyHosting = ({ userEmail }) => {
   const confirmDelete = async () => {
     if (!deleteTarget) return;
 
+    try {
     await fetch("/api/delete-site", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -44,6 +45,9 @@ const MyHosting = ({ userEmail }) => {
         email: email
       })
     });
+    } catch (err) {
+      alert("Failed to delete site");
+}
 
     setSites(prev => prev.filter(s => s.repo !== deleteTarget.repo));
     setDeleteTarget(null);

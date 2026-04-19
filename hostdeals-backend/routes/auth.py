@@ -8,7 +8,7 @@ users_collection = mongo.db.users
 
 @auth_bp.route("/api/register", methods=["POST"])
 def register():
-    data = request.json
+    data = request.json or {}
 
     email = data.get("email", "").strip().lower()
 

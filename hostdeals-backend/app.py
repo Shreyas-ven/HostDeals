@@ -7,12 +7,15 @@ from extensions import mongo
 
 load_dotenv()
 
+
+
 app = Flask(__name__)
 CORS(app)
 
 app.config["JSON_SORT_KEYS"] = False
 
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB
 
 # Initialize Mongo
 mongo.init_app(app)

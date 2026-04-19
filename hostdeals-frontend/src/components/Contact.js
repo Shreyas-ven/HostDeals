@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./styles/Contact.css";
 
-
 const Contact = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -17,30 +16,37 @@ const Contact = () => {
   };
 
   const handleSubmit = async () => {
-  setLoading(true);   // ✅ start loader
-  setStatus("");
+    setLoading(true);
+    setStatus("");
 
-  try {
-    await axios.post("/api/contact", {
-      name,
-      email,
-      message,
-    });
-
-    setStatus(res.data.message);
-
-    if (res.data.message === "Message sent successfully") {
-      setName("");
-      setEmail("");
-      setMessage("");
+    // ✅ simple validation
+    if (!name || !email || !message) {
+      setStatus("Please fill all fields");
+      setLoading(false);
+      return;
     }
 
-  } catch (err) {
-    setStatus("Error sending message");
-  } finally {
-    setLoading(false);   // ✅ stop loader
-  }
-};
+    try {
+      const res = await axios.post("/api/contact", {
+        name,
+        email,
+        message,
+      });
+
+      setStatus(res.data.message);
+
+      if (res.data.message === "Message sent successfully") {
+        setName("");
+        setEmail("");
+        setMessage("");
+      }
+
+    } catch (err) {
+      setStatus("Error sending message");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="contact-page">
@@ -84,9 +90,10 @@ const Contact = () => {
           />
 
           <button onClick={handleSubmit} disabled={loading}>
-  {loading ? "Sending..." : "Send Message"}
-</button>
-{loading && <div className="loader"></div>}
+            {loading ? "Sending..." : "Send Message"}
+          </button>
+
+          {loading && <div className="loader"></div>}
 
           <p>{status}</p>
 
@@ -94,12 +101,12 @@ const Contact = () => {
 
       </main>
 
+      <br /> <br />
 
-<br /> <br />
       {/* FOOTER */}
       <footer className="contact-footer">
         HostDeals | shreyasvbangera@gmail.com | 8073318562 | <br /> <br />
-                     <center> All copyrights reserved </center>
+        <center> All copyrights reserved </center>
       </footer>
 
     </div>

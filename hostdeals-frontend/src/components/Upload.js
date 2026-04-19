@@ -37,6 +37,8 @@ const Upload = () => {
     jsFiles.forEach(file => formData.append("js", file));
     images.forEach(file => formData.append("images", file));
 
+    setShowSuccess(false); // before try
+
     try {
       setLoading(true);
       setStatus("Uploading...");

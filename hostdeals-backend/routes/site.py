@@ -7,15 +7,6 @@ site_bp = Blueprint("site", __name__)
 users_collection = mongo.db.users
 sites_collection = mongo.db.sites
 
-from flask import Blueprint, request, jsonify
-import requests
-from extensions import mongo
-
-site_bp = Blueprint("site", __name__)
-
-users_collection = mongo.db.users
-sites_collection = mongo.db.sites
-
 
 @site_bp.route("/api/start-site", methods=["POST"])
 def start_site():

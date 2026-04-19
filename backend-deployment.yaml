@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: hostdeals-backend
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://shreyasvbangera_db_user:roiKaCaedbFbshRH@cluster0.tgurg51.mongodb.net/HostDeals?retryWrites=true&w=majority"
+
+            - name: SENDER_EMAIL
+              value: "shreyasvbangera@gmail.com"
+
+            - name: SENDER_PASSWORD
+              value: "yayrexgjemhkxejz"

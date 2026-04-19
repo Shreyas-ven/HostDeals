@@ -8,6 +8,8 @@ services:
       
   frontend:
     build: ./hostdeals-frontend
+    env_file:
+      - ./hostdeals-backend/.env
     volumes:
       - ./hostdeals-frontend:/app  # 🔥 LIVE CODE (for dev)
     ports:
