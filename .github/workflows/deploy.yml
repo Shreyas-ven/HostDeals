@@ -16,10 +16,9 @@ jobs:
       - name: Set Minikube Docker Env
         shell: powershell
         run: |
-          minikube docker-env --shell powershell 
-          $envs = minikube docker-env --shell powershell
-          Invoke-Expression $envs
-          docker info
+            $envs = minikube docker-env --shell powershell
+            Invoke-Expression $envs
+            docker info
 
       - name: Build Backend Image
         run: docker build -t hostdeals-backend ./hostdeals-backend
