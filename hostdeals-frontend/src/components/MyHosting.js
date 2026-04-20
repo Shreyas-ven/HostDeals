@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/MyHosting.css";
+import { getSites, deleteSite, startSite, stopSite } from "../services/api";
 
 const MyHosting = ({ userEmail }) => {
   const navigate = useNavigate();
@@ -19,11 +20,7 @@ const MyHosting = ({ userEmail }) => {
       return;
     }
 
-    fetch(`/api/my-sites?email=${email}`)
-      .then(res => res.json())
-      .then(data => setSites(data))
-      .catch(err => console.error("Error fetching sites:", err));
-  }, [email]);
+    getSites(email).then(res => setSites(res.data));
 
   const handleCreate = () => {
     console.log("Create site:", domain, region);
@@ -37,14 +34,10 @@ const MyHosting = ({ userEmail }) => {
     if (!deleteTarget) return;
 
     try {
-    await fetch("/api/delete-site", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        repo: deleteTarget.repo,
-        email: email
-      })
-    });
+    await deleteSite({
+  repo: deleteTarget.repo,
+  email: email
+});
     } catch (err) {
       alert("Failed to delete site");
 }
@@ -92,14 +85,10 @@ const MyHosting = ({ userEmail }) => {
                   <button
                     className="glass-btn"
                     onClick={async () => {
-                      await fetch("/api/stop-site", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          repo: site.repo,
-                          email: email
-                        })
-                      });
+                      await stopSite({
+  repo: site.repo,
+  email: email
+});
 
                       setSites(prev =>
                         prev.map(s =>
@@ -114,14 +103,10 @@ const MyHosting = ({ userEmail }) => {
                   <button
                     className="glass-btn"
                     onClick={async () => {
-                      await fetch("/api/start-site", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          repo: site.repo,
-                          email: email
-                        })
-                      });
+                      await startSite({
+  repo: site.repo,
+  email: email
+});
 
                       setSites(prev =>
                         prev.map(s =>

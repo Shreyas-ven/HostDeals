@@ -1,16 +1,67 @@
 import axios from "axios";
 
+const BASE_URL = "https://hostdeals-backend.onrender.com";
+
+// ✅ AXIOS INSTANCE
+const api = axios.create({
+  baseURL: BASE_URL,
+});
+
+// ==========================
+// AUTH
+// ==========================
 export const registerUser = (user) =>
-  axios.post("/api/register", user);
+  api.post("/api/register", user);
 
 export const loginUser = (user) =>
-  axios.post("/api/login", user);
+  api.post("/api/login", user);
 
-export const uploadFile = (username, file) => {
-  const formData = new FormData();
-  formData.append("file", file);
+// ==========================
+// CONTACT
+// ==========================
+export const sendContact = (data) =>
+  api.post("/api/contact", data);
 
-  return axios.post(`/api/upload/${username}`, formData, {
+// ==========================
+// GITHUB
+// ==========================
+export const saveGithub = (data) =>
+  api.post("/api/save-github", data);
+
+export const getGithub = (email) =>
+  api.get(`/api/get-github?email=${email}`);
+
+export const deleteGithub = (data) =>
+  api.post("/api/delete-github", data);
+
+export const getRepos = (email) =>
+  api.get(`/api/get-repos?email=${email}`);
+
+// ==========================
+// PROFILE
+// ==========================
+export const getProfile = (email) =>
+  api.get(`/api/get-profile?email=${email}`);
+
+// ==========================
+// SITES
+// ==========================
+export const getSites = (email) =>
+  api.get(`/api/my-sites?email=${email}`);
+
+export const startSite = (data) =>
+  api.post("/api/start-site", data);
+
+export const stopSite = (data) =>
+  api.post("/api/stop-site", data);
+
+export const deleteSite = (data) =>
+  api.post("/api/delete-site", data);
+
+// ==========================
+// UPLOAD
+// ==========================
+export const uploadSite = (formData) =>
+  api.post("/api/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-};

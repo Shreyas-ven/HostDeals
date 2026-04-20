@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./styles/Profile.css";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { getProfile, deleteGithub } from "../services/api";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -11,13 +12,9 @@ const Profile = () => {
     const email = localStorage.getItem("userEmail");
     if (!email) return;
 
-    fetch(`/api/get-profile?email=${email}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.user) setUser(data.user);
-      })
-      .catch(err => console.error(err));
-  }, []);
+    getProfile(email).then(res => {
+  if (res.data.user) setUser(res.data.user);
+});
 
   if (!user) {
     return <div className="loader">Loading...</div>;
@@ -72,14 +69,10 @@ const Profile = () => {
                 <button
                   className="remove-btn"
                   onClick={async () => {
-                    await fetch("/api/delete-github", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        email: user.email,
-                        username: acc.username
-                      })
-                    });
+                   await deleteGithub({
+  email: user.email,
+  username: acc.username
+});
 
                     setUser(prev => ({
                       ...prev,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/Dashboard.css";
 import toast, { Toaster } from "react-hot-toast";
+import { getGithub, getRepos, saveGithub } from "../services/api";
 
 const Dashboard = () => {
 
@@ -22,29 +23,19 @@ const Dashboard = () => {
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
 
-    fetch(`/api/get-github?email=${email}`)
-      .then(res => res.json())
-      .then(data => {
-        setGithubAccounts(data.accounts || []);
-      })
-      .catch(() => setGithubAccounts([]));
-  }, []);
+    getGithub(email).then(res => {
+  setGithubAccounts(res.data.accounts || []);
+});
 
   // ✅ Fetch repos
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
 
-    fetch(`/api/get-repos?email=${email}`)
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setRepos(data);
-        } else {
-          setRepos([]);
-        }
-      })
-      .catch(() => setRepos([]));
-  }, []);
+    getRepos(email).then(res => {
+  const data = res.data;
+  if (Array.isArray(data)) setRepos(data);
+  else setRepos([]);
+});
 
   // ✅ FIXED FUNCTION (ONLY ONCE — NO DUPLICATES)
   const handleSaveGitHub = async () => {
@@ -62,23 +53,13 @@ const Dashboard = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/save-github", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: localStorage.getItem("userEmail"),
-          github_username: githubUser,
-          github_token: githubToken
-        })
-      });
+      const res = await saveGithub({
+  email: localStorage.getItem("userEmail"),
+  github_username: githubUser,
+  github_token: githubToken
+});
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message || "Failed to save GitHub account");
-        setLoading(false);
-        return;
-      }
+      const data = res.data;
 
       toast.success("GitHub Connected");
 

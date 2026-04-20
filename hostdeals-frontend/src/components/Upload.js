@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { uploadSite } from "../services/api";
 import "./styles/Upload.css";
 
 const Upload = () => {
@@ -43,11 +43,7 @@ const Upload = () => {
       setLoading(true);
       setStatus("Uploading...");
 
-      await axios.post(
-        "/api/upload",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      await uploadSite(formData);
 
       // ✅ SUCCESS FLOW
       setStatus("");

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { sendContact } from "../services/api";
 import "./styles/Contact.css";
 
 const Contact = () => {
@@ -27,7 +27,7 @@ const Contact = () => {
     }
 
     try {
-      const res = await axios.post("/api/contact", {
+      const res = await sendContact({
         name,
         email,
         message,
