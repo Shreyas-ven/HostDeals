@@ -21,33 +21,25 @@ html, body, #root {
   height: 100vh;
 }
 
-/* MOBILE STACK FIX */
-@media (max-width: 768px) {
-  .login-page {
-    flex-direction: column;
-    height: auto;
-  }
-}
-
 /* LEFT PANEL */
-.left-panel,
-.right-panel {
+.left-panel {
   flex: 1;
   position: relative;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .left-panel,
-  .right-panel {
-    width: 100%;
-    flex: none;
-    height: auto;
-    min-height: 50vh;
-  }
+/* RIGHT PANEL */
+.right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
 }
-
-
 
 /* BRAND TEXT */
 .brand {
@@ -97,19 +89,6 @@ html, body, #root {
   box-shadow: 0 8px 40px rgba(0,0,0,0.6);
   display: flex;
   flex-direction: column;
-}
-
-.login-glass-card {
-  width: 80%;
-  max-width: 400px;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .login-glass-card {
-    width: 90%;
-    padding: 30px 20px;
-  }
 }
 
 /* TITLE */
@@ -163,18 +142,11 @@ html, body, #root {
   top: 0;
   width: 100%;
   height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
   z-index: 100;
-}
-
-/* MOBILE HEADER FIX */
-@media (max-width: 768px) {
-  .login-header {
-    position: relative;
-    height: auto;
-    flex-direction: column;
-    gap: 10px;
-    padding: 15px;
-  }
 }
 
 /* LOGO */
@@ -257,13 +229,6 @@ html, body, #root {
   transition: 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .glass-nav {
-    gap: 15px;
-    padding: 10px;
-  }
-}
-
 /* MENU ITEMS */
 .glass-nav span {
   color: #ccc;
@@ -324,11 +289,11 @@ html, body, #root {
 
 /* 🔥 SLOGAN BOX */
 .slogan-box {
+  position: absolute;
+  bottom: 80px;
   text-align: center;
-  margin-top: 20px;
-  position: relative;
   z-index: 2;
-  padding: 20px;
+  width: 100%;
 }
 
 /* ✨ NEON TEXT */
@@ -383,14 +348,4 @@ html, body, #root {
   
   margin: 6px 0;
   letter-spacing: 1.5px;
-}
-
-@media (max-width: 768px) {
-  .brand h1 {
-    font-size: 2rem;
-  }
-
-  .slogan {
-    font-size: 0.9rem;
-  }
 }
