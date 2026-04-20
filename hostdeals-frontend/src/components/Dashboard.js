@@ -24,18 +24,20 @@ const Dashboard = () => {
     const email = localStorage.getItem("userEmail");
 
     getGithub(email).then(res => {
-  setGithubAccounts(res.data.accounts || []);
-});
+      setGithubAccounts(res.data.accounts || []);
+    });
+  }, []);
 
   // ✅ Fetch repos
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
 
     getRepos(email).then(res => {
-  const data = res.data;
-  if (Array.isArray(data)) setRepos(data);
-  else setRepos([]);
-});
+      const data = res.data;
+      if (Array.isArray(data)) setRepos(data);
+      else setRepos([]);
+    });
+  }, []);
 
   // ✅ FIXED FUNCTION (ONLY ONCE — NO DUPLICATES)
   const handleSaveGitHub = async () => {
@@ -53,20 +55,11 @@ const Dashboard = () => {
     setLoading(true);
 
     try {
-      const res = await saveGithub({
-  email: localStorage.getItem("userEmail"),
-  github_username: githubUser,
-  github_token: githubToken
-});
-
-      const data = res.data;
-
-      toast.success("GitHub Connected");
-
-      setGithubAccounts(prev => [
-        ...prev,
-        { username: githubUser }
-      ]);
+      await saveGithub({
+        email: localStorage.getItem("userEmail"),
+        github_username: githubUser,
+        github_token: githubToken
+      });
 
       setShowGitModal(false);
       setGithubUser("");

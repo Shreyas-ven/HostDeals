@@ -13,9 +13,11 @@ const Profile = () => {
     if (!email) return;
 
     getProfile(email).then(res => {
-  if (res.data.user) setUser(res.data.user);
-});
+      if (res.data.user) setUser(res.data.user);
+    });
+  }, []); // ✅ THIS WAS MISSING
 
+  // ✅ KEEP THIS OUTSIDE useEffect
   if (!user) {
     return <div className="loader">Loading...</div>;
   }
@@ -29,11 +31,11 @@ const Profile = () => {
         <h2>My Profile</h2>
 
         <button
-    className="home-btn"
-    onClick={() => navigate("/dashboard")}
-  >
-    🏠 Home
-  </button>
+          className="home-btn"
+          onClick={() => navigate("/dashboard")}
+        >
+          🏠 Home
+        </button>
       </div>
 
       {/* MAIN CARD */}
@@ -69,10 +71,10 @@ const Profile = () => {
                 <button
                   className="remove-btn"
                   onClick={async () => {
-                   await deleteGithub({
-  email: user.email,
-  username: acc.username
-});
+                    await deleteGithub({
+                      email: user.email,
+                      username: acc.username
+                    });
 
                     setUser(prev => ({
                       ...prev,

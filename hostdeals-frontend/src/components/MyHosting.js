@@ -10,17 +10,16 @@ const MyHosting = ({ userEmail }) => {
   const [showForm, setShowForm] = useState(false);
   const [domain, setDomain] = useState("");
   const [region, setRegion] = useState("");
-  const [deleteTarget, setDeleteTarget] = useState(null); // ✅ ADDED
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const email = userEmail || localStorage.getItem("userEmail");
 
+  // ✅ FETCH SITES
   useEffect(() => {
-    if (!email) {
-      console.log("❌ No email found");
-      return;
-    }
+    if (!email) return;
 
     getSites(email).then(res => setSites(res.data));
+  }, [email]);
 
   const handleCreate = () => {
     console.log("Create site:", domain, region);
@@ -29,18 +28,18 @@ const MyHosting = ({ userEmail }) => {
     setRegion("");
   };
 
-  // ✅ CONFIRM DELETE FUNCTION (ADDED)
+  // ✅ DELETE SITE (USING API FUNCTION)
   const confirmDelete = async () => {
     if (!deleteTarget) return;
 
     try {
-    await deleteSite({
-  repo: deleteTarget.repo,
-  email: email
-});
+      await deleteSite({
+        repo: deleteTarget.repo,
+        email: email
+      });
     } catch (err) {
       alert("Failed to delete site");
-}
+    }
 
     setSites(prev => prev.filter(s => s.repo !== deleteTarget.repo));
     setDeleteTarget(null);
@@ -86,13 +85,15 @@ const MyHosting = ({ userEmail }) => {
                     className="glass-btn"
                     onClick={async () => {
                       await stopSite({
-  repo: site.repo,
-  email: email
-});
+                        repo: site.repo,
+                        email: email
+                      });
 
                       setSites(prev =>
                         prev.map(s =>
-                          s.repo === site.repo ? { ...s, status: "Stopped" } : s
+                          s.repo === site.repo
+                            ? { ...s, status: "Stopped" }
+                            : s
                         )
                       );
                     }}
@@ -104,13 +105,15 @@ const MyHosting = ({ userEmail }) => {
                     className="glass-btn"
                     onClick={async () => {
                       await startSite({
-  repo: site.repo,
-  email: email
-});
+                        repo: site.repo,
+                        email: email
+                      });
 
                       setSites(prev =>
                         prev.map(s =>
-                          s.repo === site.repo ? { ...s, status: "Running" } : s
+                          s.repo === site.repo
+                            ? { ...s, status: "Running" }
+                            : s
                         )
                       );
                     }}
@@ -119,7 +122,7 @@ const MyHosting = ({ userEmail }) => {
                   </button>
                 )}
 
-                {/* ✅ UPDATED DELETE BUTTON */}
+                {/* DELETE BUTTON */}
                 <button
                   className="glass-btn delete"
                   onClick={() => setDeleteTarget(site)}
@@ -133,7 +136,7 @@ const MyHosting = ({ userEmail }) => {
         </div>
       </main>
 
-      {/* EXISTING MODAL */}
+      {/* CREATE MODAL */}
       {showForm && (
         <div className="modal-overlay">
           <div className="modal">
@@ -156,7 +159,10 @@ const MyHosting = ({ userEmail }) => {
               <button className="glass-btn" onClick={handleCreate}>
                 Launch
               </button>
-              <button className="glass-btn delete" onClick={() => setShowForm(false)}>
+              <button
+                className="glass-btn delete"
+                onClick={() => setShowForm(false)}
+              >
                 Cancel
               </button>
             </div>
@@ -164,7 +170,7 @@ const MyHosting = ({ userEmail }) => {
         </div>
       )}
 
-      {/* ✅ NEW DELETE CONFIRM MODAL */}
+      {/* DELETE CONFIRM MODAL */}
       {deleteTarget && (
         <div className="modal-overlay">
           <div className="modal glass delete-modal">
